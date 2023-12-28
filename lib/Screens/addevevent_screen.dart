@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'Timer/am_pm.dart';
-import 'Timer/hours.dart';
-import 'Timer/minutes.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'eventlist_screen.dart';
 import 'home_screen.dart';
 
@@ -15,15 +12,16 @@ class AddEventScreen extends StatefulWidget {
 }
 
 class _AddEventScreenState extends State<AddEventScreen> {
-  late FixedExtentScrollController _controller;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  TextEditingController eventnameController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
 
-    _controller = FixedExtentScrollController();
-  }
+
+  var hour = 0;
+  var minute = 0;
+  var timeFormat = "AM";
+
 
 
   @override
@@ -61,6 +59,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
           child: Column(
             children: [
               TextFormField(
+                controller: eventnameController,
                 textInputAction: TextInputAction.next,
                 cursorColor: const Color(0xff919191),
                 decoration: const InputDecoration(
@@ -74,6 +73,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 height: 15,
               ),
               TextFormField(
+                controller: locationController,
                 textInputAction: TextInputAction.next,
                 cursorColor: const Color(0xff919191),
                 decoration: const InputDecoration(
@@ -87,6 +87,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 height: 20,
               ),
               TextFormField(
+                controller: dateController,
                 textInputAction: TextInputAction.done,
                 cursorColor: const Color(0xff919191),
                 decoration: const InputDecoration(
@@ -97,84 +98,133 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 ),
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // hours wheel
-                  Container(
-                    width: 70,
-                    child: ListWheelScrollView.useDelegate(
-                      controller: _controller,
-                      itemExtent: 100,
-                      perspective: 0.010,
-                      diameterRatio: .4,
-                      squeeze: 1,
-                      physics: const FixedExtentScrollPhysics(),
-                      childDelegate: ListWheelChildBuilderDelegate(
-                        childCount: 13,
-                        builder: (context, index) {
-                          return MyHours(
-                            hours: index,
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(
-                    width: 10,
-                  ),
-
-                  // minutes wheel
-                  Container(
-                    width: 70,
-                    child: ListWheelScrollView.useDelegate(
-                      itemExtent: 100,
-                      perspective: 0.010,
-                      diameterRatio: .4,
-                      physics: const FixedExtentScrollPhysics(),
-                      childDelegate: ListWheelChildBuilderDelegate(
-                        childCount: 60,
-                        builder: (context, index) {
-                          return MyMinutes(
-                            mins: index,
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(
-                    width: 15,
-                  ),
-
-                  // am or pm
-                  Container(
-                    width: 70,
-                    child: ListWheelScrollView.useDelegate(
-                      itemExtent: 100,
-                      perspective: 0.005,
-                      diameterRatio: 1.2,
-                      physics: FixedExtentScrollPhysics(),
-                      childDelegate: ListWheelChildBuilderDelegate(
-                        childCount: 2,
-                        builder: (context, index) {
-                          if (index == 0) {
-                            return AmPm(
-                              isItAm: true,
-                            );
-                          } else {
-                            return AmPm(
-                              isItAm: false,
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+              // Text(
+              //     "Pick Your Time! ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, "0")} ${timeFormat}",
+              //     style:
+              //     const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              const SizedBox(
+                height: 20,
               ),
-
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    NumberPicker(
+                      minValue: 0,
+                      maxValue: 12,
+                      value: hour,
+                      zeroPad: true,
+                      infiniteLoop: true,
+                      itemWidth: 50,
+                      itemHeight: 40,
+                      onChanged: (value) {
+                        setState(() {
+                          hour = value;
+                        });
+                      },
+                      textStyle:
+                      const TextStyle(color: Colors.grey, fontSize: 15),
+                      selectedTextStyle:
+                      const TextStyle(color: Colors.black, fontSize: 15),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                            top: BorderSide(
+                              color: Colors.black,
+                            ),
+                            bottom: BorderSide(color: Colors.black)),
+                      ),
+                    ),
+                    NumberPicker(
+                      minValue: 0,
+                      maxValue: 59,
+                      value: minute,
+                      zeroPad: true,
+                      infiniteLoop: true,
+                      itemWidth: 50,
+                      itemHeight: 40,
+                      onChanged: (value) {
+                        setState(() {
+                          minute = value;
+                        });
+                      },
+                      textStyle:
+                      const TextStyle(color: Colors.grey, fontSize: 15),
+                      selectedTextStyle:
+                      const TextStyle(color: Colors.black, fontSize: 15),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                            top: BorderSide(
+                              color: Colors.black,
+                            ),
+                            bottom: BorderSide(color: Colors.black)),
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              timeFormat = "AM";
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                                color: timeFormat == "AM"
+                                    ? Color(0xff607D8B)
+                                    : Colors.grey.shade700,
+                                border: Border.all(
+                                  color: timeFormat == "AM"
+                                      ? Colors.grey
+                                      : Colors.grey.shade700,
+                                )),
+                            child: const Text(
+                              "AM",
+                              style: TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              timeFormat = "PM";
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: timeFormat == "PM"
+                                  ? Color(0xff607D8B)
+                                  : Colors.grey.shade700,
+                              border: Border.all(
+                                color: timeFormat == "PM"
+                                    ? Colors.grey
+                                    : Colors.grey.shade700,
+                              ),
+                            ),
+                            child: const Text(
+                              "PM",
+                              style: TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

@@ -3,8 +3,19 @@ import 'package:personalorganizer/Screens/tasklist_screen.dart';
 import 'home_screen.dart';
 
 
-class AddTaskScreen extends StatelessWidget {
+class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
+
+  @override
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+
+  TextEditingController taskController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +52,7 @@ class AddTaskScreen extends StatelessWidget {
           child: Column(
             children: [
               TextFormField(
+                controller: taskController,
                 textInputAction: TextInputAction.next,
                 cursorColor: const Color(0xff919191),
                 decoration: const InputDecoration(
@@ -54,6 +66,7 @@ class AddTaskScreen extends StatelessWidget {
                 height: 15,
               ),
               TextFormField(
+                controller: locationController,
                 textInputAction: TextInputAction.done,
                 cursorColor: const Color(0xff919191),
                 decoration: const InputDecoration(
