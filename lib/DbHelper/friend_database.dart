@@ -24,7 +24,7 @@ class FriendDBHelper {
 
   _onCreate(Database db, int version) async {
     await  db.execute(
-        "CREATE TABLE myFriend (id INTEGER PRIMARY KEY AUTOINCREMENT, firstname TEXT NOT NULL, lastname TEXT NOT NULL, address TEXT NOT NULL ,age INTEGER NOT NULL, photoname STRING NOT NULL)",
+        "CREATE TABLE myFriend (id INTEGER PRIMARY KEY AUTOINCREMENT, firstname TEXT NOT NULL, lastname TEXT NOT NULL, address TEXT NOT NULL ,age INTEGER NOT NULL, photoname STRING NOT NULL, gender STRING NOT NULL)",
 
     );
   }
@@ -37,7 +37,7 @@ class FriendDBHelper {
   }
 
 
-  Future<List<FriendModel>> getCartListWithUserId() async {
+  Future<List<FriendModel>> get() async {
     var dbClient = await db;
 
     final List<Map<String, Object?>> queryResult = await dbClient!.query('myFriend' );

@@ -1,7 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:personalorganizer/Screens/friendlist_screen.dart';
-
 import '../DbHelper/friend_database.dart';
 import '../Models/friend_model.dart';
 import 'home_screen.dart';
@@ -15,49 +16,66 @@ class AddFriendScreen extends StatefulWidget {
 
 class _AddFriendScreenState extends State<AddFriendScreen> {
   final formKey = GlobalKey<FormState>();
+
   String? selectedGender;
   TextEditingController nameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  XFile? _imageFile;
 
   FriendDBHelper? dbHelper;
 
 
-  // TODO Add Account Data
+  // TODO Add Friend Data
   validation() {
     if (formKey.currentState!.validate()) {
-      dbHelper
-          ?.insert(FriendModel(
-        age: int.parse(ageController.text.toString()),
-        firstname: nameController.text.toString(),
-        lastname: lastnameController.text.toString(),
-        address: addressController.text.toString(),
-      ))
-          .then((value) {
-        print("Data Added");
-        Fluttertoast.showToast(msg: "Data Added");
-        ageController.clear();
-        nameController.clear();
-        lastnameController.clear();
-        addressController.clear();
-      }).onError((error, stackTrace) {
-        print(error.toString());
-      });
+      if (_imageFile != null) {
+        if (selectedGender != null) {
+          dbHelper
+              ?.insert(FriendModel(
+            age: int.parse(ageController.text.toString()),
+            firstname: nameController.text.toString(),
+            lastname: lastnameController.text.toString(),
+            address: addressController.text.toString(),
+            photoname: _imageFile?.path ?? '',
+            gender: selectedGender!,
+          ))
+              .then((value) {
+            print("Data Added");
+            print(" image $_imageFile");
+            print("radio $selectedGender");
+            Fluttertoast.showToast(msg: "Data Added");
+            ageController.clear();
+            nameController.clear();
+            lastnameController.clear();
+            addressController.clear();
+            setState(() {
+              _imageFile = null;
+              selectedGender = null;
+            });
+          }).onError((error, stackTrace) {
+            print(error.toString());
+          });
+        } else {
+          Fluttertoast.showToast(msg: 'Please select gender');
+        }
+      } else {
+        Fluttertoast.showToast(msg: 'Please select an image');
+      }
     } else {
       Fluttertoast.showToast(msg: 'Please Provide the required information');
       print("Enter The Information in the Textfields");
-
     }
   }
+
+
 
   @override
   void initState() {
     super.initState();
     dbHelper = FriendDBHelper();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -96,9 +114,23 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
             child: Column(
               children: [
                 Center(
-                  child: IconButton(onPressed: () {
+                  child: IconButton(onPressed: () async {
+                    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+                    if (pickedFile != null) {
+                      setState(() {
+                        _imageFile = pickedFile as XFile?;
+                      });
+                    }
                   },
-                      icon: const Icon(Icons.person_rounded,size: 120,color: Color(0xff757575),)),
+                    icon: _imageFile == null
+                        ? const Icon(Icons.person_rounded, size: 120, color: Color(0xff757575))
+                        : Image.file(
+                      File(_imageFile!.path),
+                      width: 120,
+                      height: 120,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 30,
