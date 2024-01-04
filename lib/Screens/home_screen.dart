@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:personalorganizer/Screens/tasklist_screen.dart';
 import 'eventlist_screen.dart';
 import 'friendlist_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Handle the picked image file, you can save or use it as needed.
+      print("Image picked: ${pickedFile.path}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                   height: 40,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 90,right: 80),
+                  padding: const EdgeInsets.only(left: 70,right: 70),
                   child: Row(
                     children: [
                       InkWell(
@@ -81,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                   height: 30,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 90,right: 80),
+                  padding: const EdgeInsets.only(left: 70,right: 70),
                   child: Row(
                     children: [
                       InkWell(
@@ -107,19 +122,24 @@ class HomeScreen extends StatelessWidget {
                       const SizedBox(
                         width: 40,
                       ),
-                      Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color(0xff1A4C6D),
-                        ),
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.image,size: 20,color: Colors.white,),
-                            Text('Images',style: TextStyle(fontSize: 14,color: Colors.white),)
-                          ],
+                      InkWell(
+                        onTap: () {
+                          _pickImage();
+                        },
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: const Color(0xff1A4C6D),
+                          ),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.image,size: 20,color: Colors.white,),
+                              Text('Images',style: TextStyle(fontSize: 14,color: Colors.white),)
+                            ],
+                          ),
                         ),
                       )
                     ],

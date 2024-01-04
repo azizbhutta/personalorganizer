@@ -25,7 +25,7 @@ class EventDBHelper {
 
   _onCreate(Database db, int version) async {
     await  db.execute(
-      "CREATE TABLE myEvent (id INTEGER PRIMARY KEY AUTOINCREMENT, eventname TEXT NOT NULL, location TEXT NOT NULL, date INTEGER NOT NULL )",
+      "CREATE TABLE myEvent (id INTEGER PRIMARY KEY AUTOINCREMENT, eventname TEXT NOT NULL, location TEXT NOT NULL, time TEXT NOT NULL, todoDate TEXT NOT NULL )",
 
     );
   }
@@ -33,12 +33,12 @@ class EventDBHelper {
 
   Future<EventModel> insert(EventModel eventModel) async {
     var dbClient = await db;
-    await dbClient!.insert('myFriend', eventModel.toMap());
+    await dbClient!.insert('myEvent', eventModel.toMap());
     return eventModel;
   }
 
 
-  Future<List<EventModel>> getCartListWithUserId() async {
+  Future<List<EventModel>> get() async {
     var dbClient = await db;
 
     final List<Map<String, Object?>> queryResult = await dbClient!.query('myEvent' );

@@ -26,6 +26,7 @@ class _EditFriendScreenState extends State<EditFriendScreen> {
   late Future<List<FriendModel>> friendList;
   FriendDBHelper? dbHelper;
 
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +44,94 @@ class _EditFriendScreenState extends State<EditFriendScreen> {
     // Reload the data after deletion
     loadData();
   }
+
+
+
+  // void showEditDialog(FriendModel friend) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text('Edit Friend'),
+  //         content: Column(
+  //           children: [
+  //             // Add TextFormFields or other input widgets for each field
+  //             // and pre-fill them with the existing data
+  //             TextFormField(
+  //               controller: nameController,
+  //               decoration: const InputDecoration(labelText: 'First Name'),
+  //
+  //             ),
+  //             TextFormField(
+  //               controller: lastnameController,
+  //               decoration: const InputDecoration(labelText: 'Last Name'),
+  //
+  //             ),
+  //             // Repeat for other fields
+  //
+  //             ElevatedButton(
+  //               onPressed: () {
+  //                 // Perform the update in the database
+  //                 // You might want to add validation checks here
+  //                 dbHelper!.update(
+  //                   FriendModel(
+  //                     id: friend.id,
+  //                     firstname: nameController.text,
+  //                     lastname: lastnameController.text,
+  //                     age: ageController.hashCode,
+  //                     address: addressController.text,
+  //                     photoname: '',
+  //                     gender: '',
+  //                     // Set other properties as needed
+  //                   ),
+  //                 );
+  //
+  //                 // Reload the data after update
+  //                 loadData();
+  //
+  //                 // Close the dialog
+  //                 Navigator.of(context).pop();
+  //               },
+  //               child: const Text('Update'),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+
+  // void showEditFirstNameDialog(FriendModel friend) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text('Edit First Name'),
+  //         content: Column(
+  //           children: [
+  //             TextFormField(
+  //               controller: nameController,
+  //               decoration: const InputDecoration(labelText: 'First Name'),
+  //               initialValue: friend.firstname.toString(),
+  //             ),
+  //             ElevatedButton(
+  //               onPressed: () {
+  //                 // Update only the first name in the database
+  //                 dbHelper!.update(friend.id);
+  //                 // Reload the data after update
+  //                 loadData();
+  //                 // Close the dialog
+  //                 Navigator.of(context).pop();
+  //               },
+  //               child: const Text('Update'),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
 
 
@@ -139,6 +228,7 @@ class _EditFriendScreenState extends State<EditFriendScreen> {
                                IconButton(
                                  icon: const Icon(Icons.edit),
                                  onPressed: () {
+                                   // showEditFirstNameDialog(snapshot.data![index]);
                                  },
                                ),
                              ],

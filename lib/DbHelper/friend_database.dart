@@ -65,5 +65,4 @@ class FriendDBHelper {
         whereArgs: [friendModel.id]
     );
   }
-
 }

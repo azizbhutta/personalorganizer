@@ -4,14 +4,18 @@ class EventModel {
   final int? id;
   final String eventname;
   final String location;
-  final DateTime date;
+  // DateTime dateTime;
+  String todoDate;
+  String time;
 
 
   EventModel({
     this.id,
     required this.eventname,
     required this.location,
-    required this.date,
+    // required this.dateTime,
+    required this.time,
+    required this.todoDate,
 
   });
 
@@ -19,10 +23,13 @@ class EventModel {
       : id = res["id"],
         eventname = res["eventname"],
         location = res["location"],
-        date = res["date"];
+        // dateTime = res["dateTime"],
+        time = res ["time"],
+        todoDate=res ["todoDate"];
+
 
 
   Map<String, Object?> toMap() {
-    return {'id':id, 'eventname': eventname, 'location': location, 'date': date, };
+    return {'id':id, 'eventname': eventname, 'location': location, 'todoDate':todoDate, 'time':time };
   }
 }

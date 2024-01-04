@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import '../DbHelper/task_database.dart';
+import '../Models/task_model.dart';
 import 'addtask_screen.dart';
 import 'home_screen.dart';
 
@@ -11,6 +12,21 @@ class TaskListScreen extends StatefulWidget {
 }
 
 class _TaskListScreenState extends State<TaskListScreen> {
+  late Future<List<TaskModel>> taskList;
+  TaskDBHelper? dbHelper;
+
+  @override
+  void initState() {
+    super.initState();
+    dbHelper = TaskDBHelper();
+    loadData();
+  }
+
+  loadData() async {
+    taskList = dbHelper!.get();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -63,7 +79,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                       children: [
                         const Text('Pending Tasks Content',style: TextStyle(fontSize:15, color: Color(0xff7D7D7D)),),
                         TextButton(onPressed: (){
-                
+
                         },
                             child: const Text('Mark as done',style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w800),))
                       ],
